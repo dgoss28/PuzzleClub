@@ -17,7 +17,11 @@
   },
   "homepage": "https://github.com/dgoss28/PuzzleClub#readme",
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "browser-sync": "^2.18.13",
+    "browsersync": "0.0.1-security",
+    "gulp": "^3.9.1",
+    "gulp-sass": "^3.1.0",
+    "gulp-util": "^3.0.8"
   },
   "dependencies": {}
 }
