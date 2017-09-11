@@ -1,0 +1,22 @@
+{
+  "name": "puzzleclub",
+  "version": "1.0.0",
+  "description": "Create puzzles and play new board games with family and friends. Once you're done playing a game, just send it back in and choose the next one!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dgoss28/PuzzleClub.git"
+  },
+  "author": "Dylan Goss",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dgoss28/PuzzleClub/issues"
+  },
+  "homepage": "https://github.com/dgoss28/PuzzleClub#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
