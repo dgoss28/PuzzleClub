@@ -18,5 +18,6 @@
   "homepage": "https://github.com/dgoss28/PuzzleClub#readme",
   "devDependencies": {
     "gulp": "^3.9.1"
-  }
+  },
+  "dependencies": {}
 }
