@@ -1,22 +1,37 @@
-var express = require('express')
-var app = express()
-var routes = require('./routes/index')
-var http=require('http');
+// var express = require('express')
+// var app = express()
+// var routes = require('./routes/index')
+// var http=require('http');
 
-var server=http.createServer(function(req,res){
-    res.end('test');
-});
+// var server=http.createServer(function(req,res){
+//     res.end('test');
+// });
 
-server.on('listening',function(){
-    console.log('ok, server is running');
-});
+// server.on('listening',function(){
+//     console.log('ok, server is running');
+// });
 
-server.listen(3000);
 
-app.get('/', routes);
+// app.get('/', routes);
 
-app.set('port', process.env.PORT || 3000);
+
+
+
+var express = require('express');
+var serveStatic = require('serve-static');
+var app = express();
+
 app.set('view engine', 'pug');
+app.use(serveStatic(__dirname + '/views'));
+
+app.listen(3000);
+console.log('Express listening on port 3000');
+
+app.get('/', function (req, res) {
+  res.render('landing');
+});
+
+module.exports = app;
 
 
 // var express = require('express');
