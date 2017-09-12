@@ -11,6 +11,7 @@
     "url": "git+https://github.com/dgoss28/PuzzleClub.git"
   },
   "author": "Dylan Goss",
+  "main":"index.js",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/dgoss28/PuzzleClub/issues"
@@ -21,8 +22,10 @@
     "browsersync": "0.0.1-security",
     "gulp": "^3.9.1",
     "gulp-jshint": "^2.0.4",
+    "gulp-nodemon": "^2.2.1",
     "gulp-sass": "^3.1.0",
     "gulp-util": "^3.0.8",
+    "jshint": "^2.9.5",
     "jshint-stylish": "^2.2.1",
     "node-sass": "^4.5.3",
     "pug": "^2.0.0-rc.4",

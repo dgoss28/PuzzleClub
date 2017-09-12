@@ -1,8 +1,12 @@
- 
+//------ Resources ------//
+// https://scotch.io/tutorials/automate-your-tasks-easily-with-gulp-js 
+
 var gulp        = require('gulp');
 var browserSync = require('browser-sync').create();
+var jshint = require('gulp-jshint');
 var sass        = require('gulp-sass');
 var gutil = require('gulp-util');
+var nodemon = require('gulp-nodemon');
 
 gulp.task('default', function() {
   return gutil.log('Gulp is running!')
@@ -10,87 +14,64 @@ gulp.task('default', function() {
 
 gulp.task('copyPug', function() {
   // copy any html files in source/ to public/
-  gulp.src('app/pages/*.pug').pipe(gulp.dest('public'));
+  gulp.src('app/views/*.pug').pipe(gulp.dest('public/web'));
 });
 
 gulp.task('jshint', function() {
-  return gulp.src('app/js/**/*.js')
+  return gulp.src('app.js')
+    .pipe(sass.sync().on('error', sass.logError))
     .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'));
+    .pipe(jshint.reporter('jshint-stylish'))
+    .pipe(browserify())
+    .pipe(gulp.dest('public/web/js'));
+});
+
+gulp.task('build-css', function() {
+  return gulp.src('app/sass/*.scss')
+    .pipe(sass())
+    .pipe(gulp.dest('public/web/css'))
+    .pipe(browserSync.stream());
+});
+
+
+gulp.task('nodemon', function (cb) {
+  var started = false;
+  return nodemon({
+    script: 'app.js',
+    watch: ['app.js', 'public/web/js/*.js']
+  }).on('start', function () {
+    if (!started) {
+      started = true; 
+      cb();
+    } 
+  });
 });
 
 gulp.task('watch', function() {
-  gulp.watch('ap/js/**/*.js', ['jshint']);
+  gulp.watch('app/js/*.js', ['jshint']);
+  gulp.watch('app/sass/*.scss', ['build-css']);
 });
 
-//-
-// 'use strict';
- 
-// var gulp        = require('gulp');
-// var browserSync = require('browser-sync').create();
-// var sass        = require('gulp-sass');
+gulp.task('serve', ['build-css','nodemon'], function() {
+  browserSync.init({
+    proxy: "http://localhost:3000",
+    files: [
+      'app/views/*.pug',
+      'public/css/*.css',
+    ],
+    browser: "chrome",
+    notify: false,
+    port: 3000,
+    ghostMode: false
+  }),
 
-// gulp.task('default', function() {
-//   // place code for your default task here
-// });
+    gulp.watch("app/sass/*.scss", ['build-css']);
+    gulp.watch("app/views/*.pug").on('change', browserSync.reload);
+});
 
- 
-// gulp.task('sass', function () {
-//   return gulp.src('./sass/**/*.scss')
-//     .pipe(sass.sync().on('error', sass.logError))
-//     .pipe(gulp.dest('./css'));
-// });
- 
-// gulp.task('sass:watch', function () {
-//   gulp.watch('app/sass/*.scss', ['sass']);
-// });
+gulp.task('js-watch', ['jshint'], function (done) {
+    browserSync.reload();
+    done();
+});
 
-// // Static Server + watching scss/pug files
-// gulp.task('serve', ['sass'], function() {
-
-//     browserSync.init({
-//         server: "./app"
-//     });
-
-//     gulp.watch("app/sass/*.scss", ['sass']);
-//     gulp.watch("app/pages/*.pug").on('change', browserSync.reload);
-// });
-
-// // Compile sass into CSS & auto-inject into browsers
-// gulp.task('sass', function() {
-//     return gulp.src("app/scss/*.scss")
-//         .pipe(sass())
-//         .pipe(gulp.dest("app/css"))
-//         .pipe(browserSync.stream());
-// });
-// // process JS files and return the stream.
-// gulp.task('js', function () {
-//     return gulp.src('index.js')
-//         .pipe(browserify())
-//         .pipe(uglify())
-//         .pipe(gulp.dest('dist/js'));
-// });
-
-// // create a task that ensures the `js` task is complete before
-// // reloading browsers
-// gulp.task('js-watch', ['js'], function (done) {
-//     browserSync.reload();
-//     done();
-// });
-
-// // use default task to launch Browsersync and watch JS files
-// gulp.task('default', ['js'], function () {
-
-//     // Serve files from the root of this project
-//     browserSync.init({
-//         server: {
-//             baseDir: "./"
-//         }
-//     });
-
-//     // add browserSync.reload to the tasks array to make
-//     // all browsers reload after tasks are complete.
-//     gulp.watch("js/*.js", ['js-watch']);
-// });
-
-// gulp.task('default', ['serve']);
+gulp.task('default', ['serve']);
