@@ -75,7 +75,7 @@ gulp.task('sync', ['nodemon'], function() {
     ],
     browser: "google chrome",
     port: 5000,
-    reloadDelay: 3000
+    reloadDelay: 1000
   })
   gulp.watch('./app/sass/**/*.scss', ['build-css'])
   // gulp.watch("./app/views/**/*.pug", ['build-pug']).on('change', browserSync.reload)

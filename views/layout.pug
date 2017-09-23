@@ -1,5 +1,8 @@
 html
   head
-    script(src="https://use.fontawesome.com/d643611ce9.js")
+    block scripts
+      script(src="https://use.fontawesome.com/d643611ce9.js")
+    block css
+      link(rel='stylesheet', href='public/web/css/style.css')
   body
     include header
